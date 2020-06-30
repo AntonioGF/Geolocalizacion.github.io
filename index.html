@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Posicion con Geolocation</title>
+        <script src="libs/jquery.min.js"></script>
+        <script src="libs/modernizr-custom.js"></script>
+        <script type="text/javascript">
+           $(document).ready(function(){
+            if(Modernizr.geolocation){
+                // alert("Geolocation supported");
+                navigator.geolocation.watchPosition(mostrarCoords,mostrarErr,
+                {maximumAge:1000,timeout:300000,enableHighAccuracy:true});
+            }else{
+                alert("Geolocation not supported");
+                return;
+            }
+            function mostrarCoords(pos){
+                let latitud=pos.coords.latitude;
+                let longitud=pos.coords.longitude;
+                $("#salida").html(" ");
+                $("#salida").append("<h3>Latitud: "+latitud+"</h3></br>"+
+                                    "<h3>Longitud: "+longitud+"</h3>");
+
+                // return salida;                
+            }
+            function mostrarErr(error){
+                switch(error.code){
+                    case error.PERMISSION_DENIED:
+                        alert("permiso denegado");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("posicion no disponible");
+                        break;
+                    case error.TIMEOUT:
+                        alert("Tiempo de espera agotado");
+                        break;
+                    default:
+                        alert("error desconocido");
+                }
+            }
+           });
+            
+        </script>
+    </head>
+    <body>
+        <h1>Mira tu latitud y longitud:</h1>
+        </br>
+        <div id="salida"></div>
+    </body>
+</html>
